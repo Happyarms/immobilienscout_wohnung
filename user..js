@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Immobilienscout Wohnungssuche
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.8
 // @author       You
 // @match        https://www.immobilienscout24.de/Suche/*/Wohnung-Miete/*
 // @updateURL    https://raw.githubusercontent.com/Happyarms/immobilienscout_wohnung/master/user.js
@@ -22,31 +22,23 @@ function custom_filter(){
     var content = '';
     $('.result-list-entry__data > a').each(function(blubb,e){
 
-       //$.get($(this).attr('href')), function(data){
        $.get($(this).attr('href'), function(data, status){
            preis = $(e).parent().children().children().children().children('.result-list-entry__primary-criterion:first').children('dd');
            preis2 = preis.text().replace('€','').replace('.','');
 
            quadradmeter = $(e).parent().children().children().children().children('.result-list-entry__primary-criterion:nth-child(2)').children('dd').text();
 
-           if($(data).find('.is24qa-endenergiebedarf').length > 0){
-               energiewert = $(data).find('.is24qa-endenergiebedarf').text();
+           if($(data).find('.is24qa-gesamtmiete').length > 0){
+               energiewert = $(data).find('.is24qa-gesamtmiete').text();
            }else{
                energiewert = '150';
            }
            $(preis).parent().parent().prepend('<div style=";width: 100%;"></div>');
-           $(preis).parent().parent().prepend('<dl class="grid-item result-list-entry__primary-criterion gt3" role="presentation"><dd class="font-nowrap font-line-xs">'+parseInt(energiewert)+'</dd><dt class="font-s onlyLarge">Energiewert</dt></dl>');
-           energiewert = energiewert.replace(' kWh/(m²*a)','')
-           energiewert = (parseFloat(energiewert) * parseFloat(quadradmeter)) / 12 / 11;
-           //console.log(quadradmeter);
-           //$(e).next().append(parseInt(energiewert));
-           preis2 = (parseInt(preis2)+27000) / 250;
-           $(preis).parent().parent().prepend('<dl class="grid-item result-list-entry__primary-criterion gt3" role="presentation"><dd class="font-nowrap font-line-xs">'+parseInt(energiewert)+'</dd><dt class="font-s onlyLarge">Heizkosten</dt></dl>');
-           //$(preis).parent().parent().prepend('<div style=";width: 100%;"></div>');
-           $(preis).parent().parent().prepend('<dl class="grid-item result-list-entry__primary-criterion gt3" role="presentation"><dd class="font-nowrap font-line-xs">'+preis2+'</dd><dt class="font-s onlyLarge">Kreditrate</dt></dl>');
-           preis2 = parseInt(preis2) + parseInt(energiewert);
-
-           //$(preis).append('<br />ca.: '+ preis2);
+           $(preis).parent().parent().prepend('<dl class="grid-item result-list-entry__primary-criterion gt3" role="presentation"><dd class="font-nowrap font-line-xs">'+parseInt(energiewert)+'</dd><dt class="font-s onlyLarge">Warmmiete</dt></dl>');
+		   
+           //energiewert = energiewert.replace(' kWh/(m²*a)','')
+           //preis2 = parseInt(preis2) + parseInt(energiewert);
+		   
 
            entfernungskosten = $(e).next().children('div:first').text().replace(' km|','');
            entfernungskosten = (parseFloat(entfernungskosten) * 40) * 0.3;
@@ -54,7 +46,7 @@ function custom_filter(){
            $(preis).parent().parent().prepend('<dl class="grid-item result-list-entry__primary-criterion gt3" role="presentation"><dd class="font-nowrap font-line-xs">'+parseInt(entfernungskosten)+'</dd><dt class="font-s onlyLarge">Fahrkosten</dt></dl>');
            //$(preis).append('<br />Farkost.: '+ parseInt(entfernungskosten));
            //
-           entfernungskosten = parseFloat(entfernungskosten) + parseInt(preis2);
+           entfernungskosten = parseFloat(entfernungskosten) + parseInt(energiewert);
            //
            $(preis).parent().parent().append('<div style=";width: 100%;"></div>');
            $(preis).parent().parent().append('<dl class="grid-item result-list-entry__primary-criterion gt3" role="presentation"><dd class="font-nowrap font-line-xs">'+parseInt(entfernungskosten)+'</dd><dt class="font-s onlyLarge">Gesamt</dt></dl>');
