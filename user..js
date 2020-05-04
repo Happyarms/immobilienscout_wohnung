@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Immobilienscout Wohnungssuche
 // @namespace    http://tampermonkey.net/
-// @version      0.8
+// @version      0.8.1
 // @author       You
-// @match        https://www.immobilienscout24.de/Suche/*/Wohnung-Miete/*
+// @match        https://www.immobilienscout24.de/Suche/*/wohnung-mieten*
 // @updateURL    https://raw.githubusercontent.com/Happyarms/immobilienscout_wohnung/master/user.js
 // @downloadURL  https://raw.githubusercontent.com/Happyarms/immobilienscout_wohnung/master/user.js
 // @description  try to take over the world!
@@ -35,10 +35,10 @@ function custom_filter(){
            }
            $(preis).parent().parent().prepend('<div style=";width: 100%;"></div>');
            $(preis).parent().parent().prepend('<dl class="grid-item result-list-entry__primary-criterion gt3" role="presentation"><dd class="font-nowrap font-line-xs">'+parseInt(energiewert)+'</dd><dt class="font-s onlyLarge">Warmmiete</dt></dl>');
-		   
+
            //energiewert = energiewert.replace(' kWh/(m²*a)','')
            //preis2 = parseInt(preis2) + parseInt(energiewert);
-		   
+
 
            entfernungskosten = $(e).next().children('div:first').text().replace(' km|','');
            entfernungskosten = (parseFloat(entfernungskosten) * 40) * 0.3;
