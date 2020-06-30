@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Immobilienscout Wohnungssuche
 // @namespace    http://tampermonkey.net/
-// @version      0.8.1
+// @version      0.8.2
 // @author       You
 // @match        https://www.immobilienscout24.de/Suche/*/wohnung-mieten*
 // @updateURL    https://raw.githubusercontent.com/Happyarms/immobilienscout_wohnung/master/user.js
